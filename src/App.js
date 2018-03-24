@@ -22,8 +22,23 @@ class App extends Component {
       console.log(result)
   }
     
-  sort() {
-      console.log(this.props.currentStore); 
+  sort() { 
+      let keys = [];
+      this.props.currentStore.forEach( el => {
+          keys.push(el.buy);
+      });
+      keys.sort();
+      let newStore = []
+      keys.forEach( el => {
+          this.props.currentStore.forEach( item => {
+              if(el !== item.buy){
+                  return
+              } else {
+                  newStore.push({ buy: item.buy, cost: item.cost });
+              }
+          });
+      });
+      this.props.onSortStore(newStore);
   }
   render() {
     return (
@@ -63,7 +78,7 @@ class App extends Component {
 
 export default connect(
     state => ({
-        currentStore: state
+        currentStore: state.spending
     }),
     dispatch => ({
        onAddBuy: obj => {
